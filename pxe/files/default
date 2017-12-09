@@ -1,0 +1,16 @@
+UI menu.c32
+prompt 0
+#timeout 30
+DEFAULT HardDisk
+MENU TITLE PXE I2B NETWORK SERVER
+LABEL HardDisk
+ MENU LABEL HardDisk
+ LOCALBOOT
+LABEL centos7_x64
+ MENU LABEL CentOS 7 x64
+ KERNEL /centos7/vmlinuz
+ APPEND  initrd=/centos7/initrd.img  ks=ftp://YOUR_PXE_SERVER/pub/centos-7.cfg
+LABEL centos6
+ MENU LABEL CentOS 6 x64
+ KERNEL /centos6/vmlinuz
+ APPEND  initrd=/centos6/initrd.img  ks=ftp://YOUR_PXE_SERVER/pub/centos-6.cfg

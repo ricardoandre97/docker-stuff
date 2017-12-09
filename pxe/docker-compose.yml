@@ -1,0 +1,24 @@
+version: '2'
+services:
+  pxe:
+    container_name: pxe-server
+    privileged: true
+    network_mode: host
+    build: .
+    image: pxe-server 
+    restart: always
+    volumes:
+      - $PWD/files/dhcpd:/tmp/dhcpd
+      - $PWD/files/tftp:/etc/xinetd.d/tftp
+      - $PWD/files/default:/tmp/default
+      - /opt/ks:/var/ftp/pub
+      - /etc/localtime:/etc/localtime:ro
+    hostname: pxe-server
+    environment:
+      - SUBNET=10.10.40.0
+      - NETMASK=255.255.255.0
+      - DHCP_RANGE=10.10.40.35 10.10.40.38
+      - DNS=10.10.40.1
+      - GATEWAY=10.10.40.1
+      - BROADCAST=10.10.40.255
+      - PXE_SERVER_IP=10.10.40.19

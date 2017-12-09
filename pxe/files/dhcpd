@@ -1,0 +1,29 @@
+# DHCP Server Configuration file.
+ #   see /usr/share/doc/dhcp*/dhcpd.conf.example
+ #   see dhcpd.conf(5) man page
+ #
+ # option definitions common to all supported networks...
+
+ ddns-update-style interim;
+ ignore client-updates;
+ authoritative;
+ allow booting;
+ allow bootp;
+ allow unknown-clients;
+
+ # A slightly different configuration for an internal subnet.
+
+ subnet YOUR_SUBNET netmask YOUR_NETMASK {
+ range DHCP_RANGE;
+ option domain-name-servers YOUR_DNS_SERVER;
+ option routers YOUR_GATEWAY;
+ option broadcast-address YOUR_BROADCAST;
+# default-lease-time 600;
+# max-lease-time 7200;
+ 
+ # PXE SERVER IP
+
+ next-server YOUR_PXE_SERVER; #  DHCP server ip
+ filename "pxelinux.0";
+
+ }
