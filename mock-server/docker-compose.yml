@@ -1,0 +1,13 @@
+version: '2'
+services:
+  mock:
+    container_name: mock-server
+    build: .
+    image: mock-server
+    restart: always
+    volumes:
+      - $PWD/api:/api
+      - /etc/localtime:/etc/localtime:ro
+    hostname: mock-server
+    ports:
+      - "8888:8888"
