@@ -1,0 +1,41 @@
+version: '2'
+services:
+  proxy:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    networks:
+      - net
+    volumes:
+      - $PWD/nginx/conf:/etc/nginx/conf.d
+      - $PWD/nginx/logs:/var/log/nginx
+      - $PWD/nginx/index.html:/conf/index.html
+  watcher:
+    container_name: watcher
+    image: jwilder/docker-gen
+    networks:
+      - net
+    volumes:
+      - $PWD/nginx/conf:/etc/nginx/conf.d
+      - $PWD/nginx/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - proxy
+    command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+
+# No hay que definir nombre del container de la aplicación, ya que al escalar, entregará error, debido a que los nombres deben ser únicos.
+
+  app:
+    image: tutum/hello-world
+    environment:
+      - VIRTUAL_HOST=hola.prueba.com
+#      - VIRTUAL_PORT=80 # En caso de requerir un puerto distinto
+#      - USE_IP_HASH=1 # Setear a 1, si se requiere stickiness
+    networks:
+      - net
+    depends_on:
+      - proxy
+      - watcher
+networks:
+  net:    
