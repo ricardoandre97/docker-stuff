@@ -1,0 +1,52 @@
+version: '2'
+services:
+  db:
+    container_name: guacamole-db
+    hostname: guacamole-db
+    networks:
+      - net
+    image: mysql
+#    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=$GUAC_DB_PASS
+      - MYSQL_DATABASE=$GUAC_DB_NAME
+  daemon:
+    container_name: guacamole-daemon
+    hostname: guacamole-daemon
+    networks:
+      - net
+    image: guacamole/guacd
+    depends_on:
+      - db
+#    restart: always
+  web:
+    container_name: guacamole-web
+    hostname: guacamole-web
+    networks:
+      - net
+    image: guacamole/guacamole
+#    restart: always
+    environment:
+      - GUACD_HOSTNAME=daemon
+      - MYSQL_HOSTNAME=db
+      - MYSQL_PASSWORD=$GUAC_DB_PASS
+      - MYSQL_DATABASE=$GUAC_DB_NAME
+      - MYSQL_USER=$GUAC_DB_USER
+    depends_on:
+      - daemon
+  proxy:
+    container_name: guacamole-proxy
+    hostname: guacamole-proxy
+    networks:
+      - net
+    image: nginx
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - $PWD/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web
+networks:
+  net:
+    driver: bridge
