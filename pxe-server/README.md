@@ -2,7 +2,7 @@ Docker PXE Server - CentOS 6/7
 ==============================
 
 
-This project creates a `P`reboot e`X`ecution `E`nvironment Server, to boot machines from their `NIC`'s, allowing aoutomated installations only for `CentOS` `6` and `7`.
+This project creates a `P`reboot e`X`ecution `E`nvironment Server, to boot machines from their `NIC`'s, allowing automated installations only for `CentOS` `6` and `7`.
 
 If you are running `VMWare ESXi` and want to automate your vm's installation process, this may help in conjuction with a custom kicstart file.
 
