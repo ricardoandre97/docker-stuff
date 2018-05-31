@@ -34,7 +34,6 @@ CREATE TABLE `guacamole_connection_group` (
   `max_connections_per_user` int(11),
   `enable_session_affinity`  boolean NOT NULL DEFAULT 0,
 
-
   PRIMARY KEY (`connection_group_id`),
   UNIQUE KEY `connection_group_name_parent` (`connection_group_name`, `parent_id`),
 
@@ -65,6 +64,10 @@ CREATE TABLE `guacamole_connection` (
   -- Concurrency limits
   `max_connections`          int(11),
   `max_connections_per_user` int(11),
+  
+  -- Load-balancing behavior
+  `connection_weight`        int(11),
+  `failover_only`            boolean NOT NULL DEFAULT 0,
 
   PRIMARY KEY (`connection_id`),
   UNIQUE KEY `connection_name_parent` (`connection_name`, `parent_id`),
@@ -319,6 +322,7 @@ CREATE TABLE `guacamole_connection_history` (
   `history_id`           int(11)      NOT NULL AUTO_INCREMENT,
   `user_id`              int(11)      DEFAULT NULL,
   `username`             varchar(128) NOT NULL,
+  `remote_host`          varchar(256) DEFAULT NULL,
   `connection_id`        int(11)      DEFAULT NULL,
   `connection_name`      varchar(128) NOT NULL,
   `sharing_profile_id`   int(11)      DEFAULT NULL,
@@ -332,6 +336,7 @@ CREATE TABLE `guacamole_connection_history` (
   KEY `sharing_profile_id` (`sharing_profile_id`),
   KEY `start_date` (`start_date`),
   KEY `end_date` (`end_date`),
+  KEY `connection_start_date` (`connection_id`, `start_date`),
 
   CONSTRAINT `guacamole_connection_history_ibfk_1`
     FOREIGN KEY (`user_id`)
@@ -344,6 +349,31 @@ CREATE TABLE `guacamole_connection_history` (
   CONSTRAINT `guacamole_connection_history_ibfk_3`
     FOREIGN KEY (`sharing_profile_id`)
     REFERENCES `guacamole_sharing_profile` (`sharing_profile_id`) ON DELETE SET NULL
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- User login/logout history
+--
+
+CREATE TABLE guacamole_user_history (
+
+  `history_id`           int(11)      NOT NULL AUTO_INCREMENT,
+  `user_id`              int(11)      DEFAULT NULL,
+  `username`             varchar(128) NOT NULL,
+  `remote_host`          varchar(256) DEFAULT NULL,
+  `start_date`           datetime     NOT NULL,
+  `end_date`             datetime     DEFAULT NULL,
+
+  PRIMARY KEY (history_id),
+  KEY `user_id` (`user_id`),
+  KEY `start_date` (`start_date`),
+  KEY `end_date` (`end_date`),
+  KEY `user_start_date` (`user_id`, `start_date`),
+
+  CONSTRAINT guacamole_user_history_ibfk_1
+    FOREIGN KEY (user_id)
+    REFERENCES guacamole_user (user_id) ON DELETE SET NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
