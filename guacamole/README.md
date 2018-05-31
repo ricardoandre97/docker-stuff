@@ -15,29 +15,37 @@ Requirements
 - docker-compose
 
 How to create the service
-========================
+=========================
 
-To create the server you just have to type ./run.sh reset_db
+To create the server you just have to type docker-compose up -d
 
 ```
-$ ./run.sh reset_db
+$ docker-compose up -d
 
-guacamole-db is up-to-date
-guacamole-daemon is up-to-date
-guacamole-web is up-to-date
-guacamole-proxy is up-to-date
-
-Waiting for db to start...
-DB is ready
-Applying changes...
+Creating guacamole-db ... done
+Creating guacamole-daemon ... done
+Creating guacamole-web ... done
+Creating guacamole-proxy ... done
+Creating guacamole-daemon ... 
+Creating guacamole-web ... 
+Creating guacamole-proxy ... 
 ```
-Notes
------
 
-The `reset_db` argument should be passed to create a clean database (Any existing database will be deleted), like when you create your service for the first time. 
-If you then add some users, or shells on your config, make sure to backup your database regularly.
+Destroying the service
+======================
 
-You can just type `./run.sh` to start your stopped containers.
+```
+$ docker-compose down
+Stopping guacamole-proxy  ... done
+Stopping guacamole-web    ... done
+Stopping guacamole-daemon ... done
+Stopping guacamole-db     ... done
+Removing guacamole-proxy  ... done
+Removing guacamole-web    ... done
+Removing guacamole-daemon ... done
+Removing guacamole-db     ... done
+Removing network guacamole_net
+```
 
 Checking the service
 ====================
