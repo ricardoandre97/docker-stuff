@@ -3,10 +3,7 @@ services:
   web:
     image: "nginx:$version"
     ports:
-      - target: 80
-        published: 9090
-        protocol: tcp
-        mode: ingress
+      - "9090:80"
     deploy:
       mode: replicated
       replicas: 2
