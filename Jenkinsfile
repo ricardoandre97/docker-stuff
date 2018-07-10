@@ -29,5 +29,14 @@ pipeline {
                 '''
             }
 		}
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    version=$(cat tmp)
+                    docker run -d -p 9090:80 --name tmp-$version nginx:$version
+                '''
+            }
+		}
     }
 }
