@@ -34,7 +34,7 @@ pipeline {
             steps {
                 sh '''
                     version=$(cat tmp)
-                    docker run -d -p 9090:80 --name tmp-$version nginx:$version
+                    docker stack deploy -c docker-compose.yml nginx
                 '''
             }
 		}
