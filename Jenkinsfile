@@ -34,7 +34,7 @@ pipeline {
             steps {
                 sh '''
                     export version=$(cat tmp)
-                    docker stack deploy -c docker-compose.yml nginx
+                    docker-compose -f docker-compose.yml up -d
                 '''
             }
 		}

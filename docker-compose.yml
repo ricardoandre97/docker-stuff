@@ -4,6 +4,6 @@ services:
     image: "nginx:$version"
     ports:
       - "9090:80"
-    deploy:
-      mode: replicated
-      replicas: 2
+ #   deploy:
+ ##     mode: replicated
+  #    replicas: 2
