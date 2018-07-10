@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                    version=$(cat tmp)
+                    export version=$(cat tmp)
                     docker stack deploy -c docker-compose.yml nginx
                 '''
             }
