@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh '''
                     echo $(date +%Y%m%d%H%M) > tmp
-                    version=$(cat tmp)
+                    export version=$(cat tmp)
                     docker-compose build
                 '''
             }
@@ -14,7 +14,7 @@ pipeline {
         stage('tests') {
             steps {
                 sh '''
-                    version=$(cat tmp)
+                    export version=$(cat tmp)
                     docker-compose up -d
                     for i in $(seq 1 6) ; 
                       do curl -s http://localhost:9090
