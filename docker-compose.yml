@@ -2,6 +2,7 @@ version: '3'
 services:
   web:
     image: "nginx:$version"
+    build: .
     ports:
       - "9090:80"
  #   deploy:
