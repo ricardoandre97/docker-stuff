@@ -21,9 +21,10 @@ pipeline {
                         if [ $? -ne 0 ]; then
                           echo Tests didnt pass
                           exit 1
+                        else
+                          echo Tests passed
                         fi
                     done
-                    echo Tests passed
                     docker rm -fv tmp-$version
                 '''
             }
