@@ -16,8 +16,8 @@ pipeline {
                 sh '''
                     version=$(cat tmp)
                     docker run -d -p 9090:80 --name tmp-$version nginx:$version
-                    for i in {1..6} ; 
-                      do curl http://localhost:9090
+                    for i in $(seq 1 6) ; 
+                      do curl -s http://localhost:9090
                         if [ $? -ne 0 ]; then
                           echo Tests didnt pass
                           exit 1
